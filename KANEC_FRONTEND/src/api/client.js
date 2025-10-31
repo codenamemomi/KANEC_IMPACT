@@ -8,9 +8,9 @@ const client = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Optional: Add auth token from localStorage
+// Use sessionStorage to match SignInPage
 client.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
+  const token = sessionStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

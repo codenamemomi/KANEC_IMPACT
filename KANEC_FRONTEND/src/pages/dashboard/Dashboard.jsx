@@ -209,11 +209,11 @@ const Dashboard = () => {
           <p className="hero-text">
             {getImpactMessage()}
           </p>
-          {dashboardData.insights?.user_percentile && (
+          {/* {dashboardData.insights?.user_percentile && (
             <div className="percentile-badge">
               Top {Math.round(100 - dashboardData.insights.user_percentile.percentile)}% of donors
             </div>
-          )}
+          )} */}
         </div>
         <button className="hero-btn">
           Start New Donation

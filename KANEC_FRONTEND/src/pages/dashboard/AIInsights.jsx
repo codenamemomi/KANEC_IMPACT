@@ -399,37 +399,6 @@ const AIInsights = () => {
           )}
         </div>
       </div>
-
-      {/* User Comparison Section */}
-      {userComparison && (
-        <div className="comparison-section">
-          <div className="comparison-header">
-            <TrendingUp size={18} />
-            <h3 className="comparison-title">How You Compare</h3>
-          </div>
-          <div className="comparison-stats">
-            <div className="comparison-item">
-              <span className="comparison-label">Your Avg Donation</span>
-              <span className="comparison-value">
-                {formatCurrency(userComparison.user_stats.average_donation)}
-              </span>
-              <span className={`comparison-difference ${
-                userComparison.comparison.donation_size_vs_average > 0 ? 'positive' : 
-                userComparison.comparison.donation_size_vs_average < 0 ? 'negative' : 'neutral'
-              }`}>
-                {userComparison.comparison.donation_size_vs_average > 0 ? '+' : ''}
-                {userComparison.comparison.donation_size_vs_average}% vs platform average
-              </span>
-            </div>
-            <div className="comparison-item">
-              <span className="comparison-label">Platform Avg Donation</span>
-              <span className="comparison-value">
-                {formatCurrency(userComparison.platform_averages.average_donation)}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

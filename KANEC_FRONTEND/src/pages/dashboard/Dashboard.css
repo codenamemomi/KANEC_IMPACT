@@ -16,6 +16,9 @@
 
 .page-subtitle {
   font-size: 13px;
+  font-weight: 900;
+  line-height: 2;
+  font-style: italic;
   color: hsl(var(--muted-foreground));
 }
 
@@ -28,6 +31,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+  line-height: 3;
 }
 
 .hero-content h2 {

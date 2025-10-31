@@ -1,8 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
-// Components
+// ── Layout & Common ───────────────────────────────────────────────────────
 import Navbar from './newcomponents/Navbar';
+import Footer from './newcomponents/Footer';
+
+// ── Landing sections ───────────────────────────────────────────────────────
 import Hero from './newcomponents/Hero';
 import Stats from './newcomponents/Stats';
 import Partners from './newcomponents/Partners';
@@ -10,12 +13,11 @@ import WhyChoose from './newcomponents/WhyChoose';
 import BlockchainSection from './newcomponents/BlockchainSection';
 import CTASection from './newcomponents/CTASection';
 import Vision from './newcomponents/Vision';
-import Footer from './newcomponents/Footer';
 
-// Pages
+// ── Pages ───────────────────────────────────────────────────────────────────
 import ProjectsPage from './pages/dashboard/ProjectsPage';
 import SignInPage from './pages/SignInPage';
-import VerificationPage from './pages/VerificationPage'; // Add this import
+import VerificationPage from './pages/VerificationPage';
 import DashboardLayout from './pages/dashboard/DashboardLayout';
 import Dashboard from './pages/dashboard/Dashboard';
 import DashboardProjects from './pages/dashboard/ProjectsPage';
@@ -24,38 +26,37 @@ import AIInsights from './pages/dashboard/AIInsights';
 import Reports from './pages/dashboard/Reports';
 import Settings from './pages/dashboard/Settings.jsx';
 
-// Context Providers
+// ── NEW: About – Same folder as Navbar, Hero, etc. ─────────────────────────
+import About from './newcomponents/About';   // ← CORRECT PATH
+
+// ── Context & Auth ────────────────────────────────────────────────────────
 import { ThemeProvider } from './pages/dashboard/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Placeholder components
-const Login = () => <h2 style={{ textAlign: 'center', marginTop: '100px' }}>Login Page</h2>;
+// ── Helper ─────────────────────────────────────────────────────────────────
+const PageWrapper = ({ children }) => (
+  <div style={{ paddingTop: '80px' }}>{children}</div>
+);
 
-// Wrapper component to add space for fixed navbar
-const PageWrapper = ({ children }) => {
-  return (
-    <div style={{ paddingTop: '80px' }}>
-      {children}
-    </div>
-  );
-};
-
+// ── Main routing logic ─────────────────────────────────────────────────────
 const AppContent = () => {
   const location = useLocation();
-  const isDashboardRoute = location.pathname.startsWith('/dashboard');
-  const isSignInRoute = location.pathname === '/signin' || location.pathname === '/login';
-  const isVerificationRoute = location.pathname === '/verify-email'; // Add this
 
-  // Show Navbar and Footer on all pages except SignIn/Login, Dashboard, and Verification
-  const showLayout = !isDashboardRoute && !isSignInRoute && !isVerificationRoute;
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const isAuthPage =
+    location.pathname === '/signin' ||
+    location.pathname === '/login' ||
+    location.pathname === '/verify-email';
+
+  const showLayout = !isDashboard && !isAuthPage;
 
   return (
     <>
       {showLayout && <Navbar />}
 
       <Routes>
-        {/* ✅ New Landing Page Structure */}
+        {/* ── Landing ── */}
         <Route
           path="/"
           element={
@@ -72,7 +73,7 @@ const AppContent = () => {
           }
         />
 
-        {/* Projects Page */}
+        {/* ── Public pages ── */}
         <Route
           path="/projects"
           element={
@@ -82,8 +83,6 @@ const AppContent = () => {
             </PageWrapper>
           }
         />
-
-        {/* Donors Page - Now using the Donations component */}
         <Route
           path="/donors"
           element={
@@ -94,16 +93,25 @@ const AppContent = () => {
           }
         />
 
-        {/* Sign In / Login Page */}
-        <Route path="/signin" element={<SignInPage />} />
-        <Route path="/login" element={<Login />} />
+        {/* ── ABOUT PAGE – Now correctly imported ── */}
+        <Route
+          path="/About"
+          element={
+            <PageWrapper>
+              <About />
+              <Footer />
+            </PageWrapper>
+          }
+        />
 
-        {/* Verification Page - Add this as a top-level route */}
+        {/* ── Auth pages ── */}
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/login" element={<div style={{textAlign:'center',marginTop:'100px'}}>Login Page</div>} />
         <Route path="/verify-email" element={<VerificationPage />} />
 
-        {/* Dashboard Routes (no navbar/footer) - Protected with AuthProvider */}
-        <Route 
-          path="/dashboard" 
+        {/* ── Dashboard (protected) ── */}
+        <Route
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <ThemeProvider>
@@ -124,14 +132,13 @@ const AppContent = () => {
   );
 };
 
-const App = () => {
-  return (
-    <AuthProvider>
-      <Router>
-        <AppContent />
-      </Router>
-    </AuthProvider>
-  );
-};
+// ── Root ───────────────────────────────────────────────────────────────────
+const App = () => (
+  <AuthProvider>
+    <Router>
+      <AppContent />
+    </Router>
+  </AuthProvider>
+);
 
 export default App;

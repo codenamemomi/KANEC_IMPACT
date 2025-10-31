@@ -56,79 +56,71 @@ const ProjectsPage = () => {
   };
 
   const getAuthHeaders = () => {
-  const token = localStorage.getItem('token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
+    const token = localStorage.getItem('token');
+    return token ? { Authorization: `Bearer ${token}` } : {};
+  };
 
-    const transformProjectsData = (apiData) => {
-      if (!apiData) return [];
+  const transformProjectsData = (apiData) => {
+    if (!apiData) return [];
 
-      let projectsArray = [];
+    let projectsArray = [];
 
-      if (Array.isArray(apiData)) {
-        projectsArray = apiData;
-      } else if (apiData.data && Array.isArray(apiData.data)) {
-        projectsArray = apiData.data;
-      } else if (apiData.results && Array.isArray(apiData.results)) {
-        projectsArray = apiData.results;
-      } else if (apiData.projects && Array.isArray(apiData.projects)) {
-        projectsArray = apiData.projects;
+    if (Array.isArray(apiData)) {
+      projectsArray = apiData;
+    } else if (apiData.data && Array.isArray(apiData.data)) {
+      projectsArray = apiData.data;
+    } else if (apiData.results && Array.isArray(apiData.results)) {
+      projectsArray = apiData.results;
+    } else if (apiData.projects && Array.isArray(apiData.projects)) {
+      projectsArray = apiData.projects;
+    } else {
+      console.warn('Unknown API response structure:', apiData);
+      return [];
+    }
+
+    return projectsArray.map((project, idx) => {
+      const projectId = project.id || project._id;
+      let imageUrl = '/placeholder-image.jpg';
+      
+      if (project.image) {
+        if (project.image.startsWith('/')) {
+          if (project.image.startsWith('/api/v1/')) {
+            imageUrl = `${API_BASE_URL}${project.image}`;
+          } else {
+            imageUrl = `${API_BASE_URL}/api/v1${project.image}`;
+          }
+        } 
+        else if (project.image.startsWith('http')) {
+          imageUrl = project.image;
+        }
       } else {
-        console.warn('Unknown API response structure:', apiData);
-        return [];
+        if (projectId) {
+          imageUrl = `${API_BASE_URL}/api/v1/projects/${projectId}/image`;
+        }
       }
 
-        return projectsArray.map((project, idx) => {
-          const projectId = project.id || project._id;
-          let imageUrl = '/placeholder-image.jpg';
-          
-          if (project.image) {
-            // If image is a path like "/projects/{id}/image", build full URL with API prefix
-            if (project.image.startsWith('/')) {
-              // Check if it already has the API prefix
-              if (project.image.startsWith('/api/v1/')) {
-                imageUrl = `${API_BASE_URL}${project.image}`;
-              } else {
-                // Add the missing API prefix
-                imageUrl = `${API_BASE_URL}/api/v1${project.image}`;
-              }
-            } 
-            // If it's already a full URL, use it directly
-            else if (project.image.startsWith('http')) {
-              imageUrl = project.image;
-            }
-          } else {
-            // If no image field but we have project ID, construct the correct image URL
-            if (projectId) {
-              imageUrl = `${API_BASE_URL}/api/v1/projects/${projectId}/image`;
-            }
-          }
-
-        return {
-          id: project.id || project._id || `project-${idx}`,
-          title: project.title || project.name || 'Untitled Project',
-          description: project.description || project.summary || 'No description available',
-          category: project.category || project.type || project.tags?.[0] || 'General',
-          image: imageUrl,
-          // Use the new API field names
-          raised: Number(project.amount_raised) || Number(project.raised) || 0,
-          goal: Number(project.target_amount) || Number(project.goal) || 1000,
-          location: project.location || project.country || project.region || 'Africa',
-          verified: Boolean(project.verified || project.is_verified || true),
-          // Calculate trending based on backers count
-          trending: Boolean(project.backers_count > 10 || project.trending || false),
-          // Calculate new based on creation date (projects created in last 7 days)
-          new: Boolean(
-            project.created_at && 
-            new Date(project.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          ),
-          backers_count: project.backers_count || 0,
-          wallet_address: project.wallet_address || '',
-          created_at: project.created_at || new Date().toISOString(),
-          updated_at: project.updated_at || new Date().toISOString(),
-        };
-      });
-    };
+      return {
+        id: project.id || project._id || `project-${idx}`,
+        title: project.title || project.name || 'Untitled Project',
+        description: project.description || project.summary || 'No description available',
+        category: project.category || project.type || project.tags?.[0] || 'General',
+        image: imageUrl,
+        raised: Number(project.amount_raised) || Number(project.raised) || 0,
+        goal: Number(project.target_amount) || Number(project.goal) || 1000,
+        location: project.location || project.country || project.region || 'Africa',
+        verified: Boolean(project.verified || project.is_verified || true),
+        trending: Boolean(project.backers_count > 10 || project.trending || false),
+        new: Boolean(
+          project.created_at && 
+          new Date(project.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+        ),
+        backers_count: project.backers_count || 0,
+        wallet_address: project.wallet_address || '',
+        created_at: project.created_at || new Date().toISOString(),
+        updated_at: project.updated_at || new Date().toISOString(),
+      };
+    });
+  };
 
   const filteredProjects = projects.filter((project) => {
     const matchesCategory = categoryFilter === 'all' || project.category === categoryFilter;
@@ -142,10 +134,6 @@ const ProjectsPage = () => {
   const calculateProgress = (raised, goal) => Math.min(Math.round((raised / goal) * 100), 100);
 
   const categories = ['all', ...new Set(projects.map((p) => p.category).filter(Boolean))];
-
-  /* ------------------------------------------------------------------ */
-  /* -------------------------- UI RENDERING -------------------------- */
-  /* ------------------------------------------------------------------ */
 
   if (loading) {
     return (
@@ -175,7 +163,6 @@ const ProjectsPage = () => {
 
   return (
     <div className="projects-page">
-      {/* Header */}
       <div className="projects-header">
         <h1 className="projects-title">Projects</h1>
         <p className="projects-subtitle">
@@ -183,7 +170,6 @@ const ProjectsPage = () => {
         </p>
       </div>
 
-      {/* Filters */}
       <div className="projects-filters">
         <div className="filter-left">
           <span className="filter-label">Filter by:</span>
@@ -230,7 +216,6 @@ const ProjectsPage = () => {
         </div>
       </div>
 
-      {/* Project Grid */}
       <div className="projects-grid">
         {filteredProjects.length === 0 ? (
           <div className="empty-state">
@@ -279,6 +264,8 @@ const ProjectsPage = () => {
 
               <div className="project-card-content">
                 <h3 className="project-card-title">{project.title}</h3>
+
+                {/* Truncation now handled by CSS */}
                 <p className="project-card-description">
                   {project.description}
                 </p>

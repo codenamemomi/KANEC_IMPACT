@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ import this
 import './cta.css';
 
 const CTASection = () => {
@@ -10,23 +9,14 @@ const CTASection = () => {
     threshold: 0.1,
   });
 
-  const navigate = useNavigate();
-
-  // ✅ Clear session if page is refreshed
-  useEffect(() => {
-    const hasRefreshed = sessionStorage.getItem('hasRefreshed');
-    if (!hasRefreshed) {
-      sessionStorage.clear();
-      sessionStorage.setItem('hasRefreshed', 'true');
-    }
-  }, []);
-
+  const navigate = useNavigate(); // ✅
+  
   const handleStartDonating = () => {
     const isAuthenticated = sessionStorage.getItem('isAuthenticated');
     if (isAuthenticated) {
       navigate('/dashboard/donations');
     } else {
-      sessionStorage.setItem('redirectAfterLogin', '/dashboard/donations');
+      sessionStorage.setItem('redirectAfterLogin', '/dashboard/donations'); // ✅ save next page
       navigate('/signin');
     }
   };
@@ -36,7 +26,7 @@ const CTASection = () => {
     if (isAuthenticated) {
       navigate('/dashboard/projects');
     } else {
-      sessionStorage.setItem('redirectAfterLogin', '/dashboard/projects');
+      sessionStorage.setItem('redirectAfterLogin', '/dashboard/projects'); // ✅ save next page
       navigate('/signin');
     }
   };

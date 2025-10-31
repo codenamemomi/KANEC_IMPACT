@@ -43,6 +43,12 @@
 
 .category-select {
   min-width: 200px;
+    padding: 6px 5px 6px 8px;
+    border-radius: 10px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+    font-size: 0.875rem;
 }
 
 .filter-right {
@@ -360,6 +366,17 @@
   text-align: center;
   margin-top: 8px;
   font-weight: 500;
+}
+
+.project-card-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5em;
+  max-height: 4.5em;
+  margin: 0.5em 0;
 }
 
 /* Mobile Responsive */

@@ -22,8 +22,9 @@ Below are supporting materials for this project.
 > **Security note:** Sensitive credentials (passwords, private keys, API keys) are never stored in this repository. To request the test account credentials or wallet key, please contact us directly (see contact info below) or follow the secure access instructions provided.
 
 - Test account email: `KANEC_JUDGES_TEST_ACCOUNT_EMAIL`  
-- Wallet ID: `KANEC_WALLET_ID`  
+- Test account password: `KANEC_ACCOUNT_PASSWORD`  
 - **Important:** The password and private key are not stored here. Request them securely (see below).
+- **Important:** Each account Created on Our platforms get a Wallet ID created for the user Automatically.
 
 ---
 
@@ -59,11 +60,11 @@ Below are supporting materials for this project.
 - Transaction memos and metadata
 - Real-time balance updates
 
-### 📈 Analytics & Insights
+### 📈 AI Analysis & Insights
 - Donation analytics and reporting
 - Project performance metrics
-- AI-powered insights (planned)
-- Real-time dashboard
+- AI-powered insights and personalized recommendations
+- Real-time dashboard with predictive analytics
 
 ### 🔍 Transaction Tracing
 - Complete transaction audit trail
@@ -81,6 +82,7 @@ Below are supporting materials for this project.
 - **Authentication**: JWT tokens
 - **Email**: Brevo (SendGrid) API
 - **Validation**: Pydantic
+- **AI/ML**: pandas, scikit-learn, numpy
 
 ### Frontend
 - **Framework**: React 19
@@ -249,10 +251,13 @@ The API is organized into several modules:
 - `GET /` - Get user's donation history
 - `GET /{donation_id}` - Get donation details
 
-### Analytics (`/api/v1/analytics`)
-- `GET /dashboard` - Dashboard statistics
-- `GET /projects/{project_id}` - Project analytics
-- `GET /donations/trends` - Donation trends
+### AI Analysis (`/api/v1/analytics`)
+- `GET /user/insights` - AI-powered donation insights and recommendations
+- `GET /global/stats` - Global donation statistics
+- `GET /platform/overview` - Comprehensive platform analytics
+- `GET /project/{project_id}` - Detailed project analytics
+- `GET /categories/top` - Top categories by funding
+- `GET /user/compare` - User comparison with platform averages
 
 ### Transaction Tracing (`/api/v1/trace`)
 - `GET /{transaction_hash}` - Trace transaction details
@@ -265,10 +270,10 @@ The API is organized into several modules:
 ## 🗄 Database Models
 
 ### Core Models
-- **User**: User accounts with Hedera wallet integration
-- **Organization**: Verified organizations that create projects
-- **Project**: Impact projects with escrow wallets
-- **Donation**: Donation records with blockchain transaction hashes
+- **User**: User accounts with roles (donor, admin, org), Hedera wallet integration, encrypted private keys
+- **Organization**: Verified organizations with regional information and contact details
+- **Project**: Impact projects with funding goals, categories, escrow wallets, and verification status
+- **Donation**: Donation records with blockchain transaction hashes and status tracking
 
 ### Supporting Models
 - **ActivityLog**: User activity tracking

@@ -36,6 +36,7 @@ const SignInPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [credentialError, setCredentialError] = useState(false);
 
   // Clear session if no token
   useEffect(() => {
@@ -124,6 +125,8 @@ const SignInPage = () => {
     console.log('Form submitted - Mode:', isSignIn ? 'SIGN IN' : 'SIGN UP');
     console.log('Form data:', { email, name, passwordLength: password.length, role });
 
+    // Reset credential error state
+    setCredentialError(false);
     setLoading(true);
 
     try {
@@ -142,22 +145,15 @@ const SignInPage = () => {
 
         console.log('Sign in successful - Response:', data);
         
-        // In the handleSubmit function, after successful login:
-        console.log('Sign in successful - Response:', data);
-
-        // Use AuthContext login instead of direct sessionStorage
         login(data.user, data.access_token);
         toast.success('Signed in successfully!');
 
-        // Check for redirect path in localStorage first, then sessionStorage
         const redirect = localStorage.getItem('redirectAfterLogin') || sessionStorage.getItem('redirectAfterLogin');
         console.log('Redirect path found:', redirect);
 
-        // Clear redirect from both storages
         localStorage.removeItem('redirectAfterLogin');
         sessionStorage.removeItem('redirectAfterLogin');
 
-        // Determine where to redirect
         let redirectTo = '/dashboard';
         if (redirect && !['/signin', '/signup', '/verify-email'].includes(redirect)) {
           redirectTo = redirect;
@@ -234,19 +230,49 @@ const SignInPage = () => {
       console.error('Error data:', err.response?.data);
       console.error('Error status:', err.response?.status);
 
-      const msg =
-        err.response?.data?.message ||
-        (err.response?.data?.errors
-          ? Object.values(err.response.data.errors)[0][0]
-          : 'Invalid email or password. Please try again.');
+      let errorMessage = 'An unexpected error occurred. Please try again.';
+      
+      if (err.response?.status === 401) {
+        // Specific handling for unauthorized (invalid credentials)
+        errorMessage = err.response?.data?.detail || 'Invalid email or password. Please try again.';
+        setCredentialError(true); // Set credential error state
+      } else if (err.response?.data?.detail) {
+        // Use the detail from backend if available
+        errorMessage = err.response.data.detail;
+      } else if (err.response?.data?.message) {
+        // Fallback to message field
+        errorMessage = err.response.data.message;
+      } else if (err.response?.data?.errors) {
+        // Handle validation errors
+        errorMessage = Object.values(err.response.data.errors)[0][0];
+      }
 
-      console.log('Displaying error to user:', msg);
-      toast.error(msg); // This will now show every time
+      console.log('Displaying error to user:', errorMessage);
+      
+      // Show specific styling for credential errors
+      if (errorMessage.toLowerCase().includes('invalid email or password')) {
+        toast.error(errorMessage, {
+          style: { 
+            background: '#fef2f2', 
+            color: '#dc2626',
+            border: '1px solid #fecaca'
+          }
+        });
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       console.log('Form submission finished');
       setLoading(false);
     }
   };
+
+  // Reset credential error when user types
+  useEffect(() => {
+    if (credentialError) {
+      setCredentialError(false);
+    }
+  }, [email, password]);
 
   // Forgot password logic
   const handleForgotPassword = async (e) => {
@@ -351,7 +377,7 @@ const SignInPage = () => {
 
               <form onSubmit={handleForgotPassword} className="auth-form">
                 {forgotPasswordStep === 1 && (
-                  <div className="form-group">
+                  <div className="forms-group">
                     <label>Email</label>
                     <input
                       type="email"
@@ -480,35 +506,37 @@ const SignInPage = () => {
                   </div>
                 )}
 
-                <div className="form-group">
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Password</label>
-                  <div className="password-field">
+                  <div className="form-group">
+                    <label>Email</label>
                     <input
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      type="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
+                      className={credentialError ? 'input-error' : 'Invalid Email'}
                     />
-                    <button
-                      type="button"
-                      className="show-pass-btn"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
                   </div>
+
+                  <div className="form-group">
+                    <label>Password</label>
+                    <div className="password-field">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        className={credentialError ? 'input-error' : 'Invalid Password'}
+                      />
+                      <button
+                        type="button"
+                        className="show-pass-btn"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                      </button>
+                    </div>
 
                   {/* Password Strength Indicator for Sign Up */}
                   {!isSignIn && password && (

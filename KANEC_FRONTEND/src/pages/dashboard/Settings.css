@@ -73,7 +73,7 @@
 .form-group label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: hsl(var(--foreground));
+  color: hsl(var(--foreground)) !important;
 }
 
 .save-button {
@@ -388,7 +388,7 @@
 
 .danger-item {
   display: flex;
-  justify-content: between;
+  gap : 15px;
   align-items: center;
   padding: 16px 0;
   border-bottom: 1px solid #e5e7eb;

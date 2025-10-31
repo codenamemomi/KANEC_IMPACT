@@ -1,21 +1,30 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   MapPin,
   CheckCircle,
   TrendingUp,
   Sparkles,
   RefreshCw,
+  X,
 } from 'lucide-react';
 import { API_CONFIG, API_BASE_URL } from '../../api/config';
 import axios from 'axios';
 import './Projects.css';
 
 const ProjectsPage = () => {
+  const navigate = useNavigate();
+
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+
+  // MODAL STATE
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [modalError, setModalError] = useState(null);
 
   useEffect(() => {
     fetchProjects();
@@ -25,33 +34,48 @@ const ProjectsPage = () => {
     try {
       setLoading(true);
       setError(null);
-
       const apiUrl = `${API_BASE_URL}${API_CONFIG.projects.list.url}`;
-      console.log('Fetching projects from:', apiUrl);
-
       const response = await axios({
         method: API_CONFIG.projects.list.method,
         url: apiUrl,
         timeout: 10000,
       });
-
-      console.log('API response:', response.data);
-
-      if (!response.data) {
-        console.warn('API returned empty data');
-        setProjects([]);
-        return;
-      }
-
       const transformed = transformProjectsData(response.data);
-      console.log('Transformed projects:', transformed);
       setProjects(transformed);
     } catch (err) {
-      console.error('API error:', err);
       setError(`Failed to load projects: ${err.message}`);
       setProjects([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // FETCH SINGLE PROJECT DETAILS
+  const fetchProjectDetails = async (projectId) => {
+    try {
+      setModalLoading(true);
+      setModalError(null);
+      const response = await axios.get(`${API_BASE_URL}/api/v1/projects/${projectId}`);
+      setSelectedProject(response.data);
+    } catch (err) {
+      setModalError(`Failed to load project: ${err.message}`);
+    } finally {
+      setModalLoading(false);
+    }
+  };
+
+  const openModal = (projectId) => {
+    fetchProjectDetails(projectId);
+  };
+
+  const closeModal = () => {
+    setSelectedProject(null);
+    setModalError(null);
+  };
+
+  const goToDonate = () => {
+    if (selectedProject?.id) {
+      navigate(`/dashboard/donate?project=${selectedProject.id}`);
     }
   };
 
@@ -62,9 +86,7 @@ const ProjectsPage = () => {
 
   const transformProjectsData = (apiData) => {
     if (!apiData) return [];
-
     let projectsArray = [];
-
     if (Array.isArray(apiData)) {
       projectsArray = apiData;
     } else if (apiData.data && Array.isArray(apiData.data)) {
@@ -81,7 +103,7 @@ const ProjectsPage = () => {
     return projectsArray.map((project, idx) => {
       const projectId = project.id || project._id;
       let imageUrl = '/placeholder-image.jpg';
-      
+
       if (project.image) {
         if (project.image.startsWith('/')) {
           if (project.image.startsWith('/api/v1/')) {
@@ -89,18 +111,15 @@ const ProjectsPage = () => {
           } else {
             imageUrl = `${API_BASE_URL}/api/v1${project.image}`;
           }
-        } 
-        else if (project.image.startsWith('http')) {
+        } else if (project.image.startsWith('http')) {
           imageUrl = project.image;
         }
-      } else {
-        if (projectId) {
-          imageUrl = `${API_BASE_URL}/api/v1/projects/${projectId}/image`;
-        }
+      } else if (projectId) {
+        imageUrl = `${API_BASE_URL}/api/v1/projects/${projectId}/image`;
       }
 
       return {
-        id: project.id || project._id || `project-${idx}`,
+        id: projectId || `project-${idx}`,
         title: project.title || project.name || 'Untitled Project',
         description: project.description || project.summary || 'No description available',
         category: project.category || project.type || project.tags?.[0] || 'General',
@@ -111,7 +130,7 @@ const ProjectsPage = () => {
         verified: Boolean(project.verified || project.is_verified || true),
         trending: Boolean(project.backers_count > 10 || project.trending || false),
         new: Boolean(
-          project.created_at && 
+          project.created_at &&
           new Date(project.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
         ),
         backers_count: project.backers_count || 0,
@@ -124,7 +143,8 @@ const ProjectsPage = () => {
 
   const filteredProjects = projects.filter((project) => {
     const matchesCategory = categoryFilter === 'all' || project.category === categoryFilter;
-    const matchesStatus = statusFilter === 'all' ||
+    const matchesStatus =
+      statusFilter === 'all' ||
       (statusFilter === 'verified' && project.verified) ||
       (statusFilter === 'trending' && project.trending) ||
       (statusFilter === 'new' && project.new);
@@ -132,7 +152,6 @@ const ProjectsPage = () => {
   });
 
   const calculateProgress = (raised, goal) => Math.min(Math.round((raised / goal) * 100), 100);
-
   const categories = ['all', ...new Set(projects.map((p) => p.category).filter(Boolean))];
 
   if (loading) {
@@ -188,7 +207,6 @@ const ProjectsPage = () => {
               ))}
           </select>
         </div>
-
         <div className="filter-right">
           <button
             className={`status-badge verified ${statusFilter === 'verified' ? 'active' : ''}`}
@@ -197,7 +215,6 @@ const ProjectsPage = () => {
             <CheckCircle size={14} />
             Verified
           </button>
-
           <button
             className={`status-badge trending ${statusFilter === 'trending' ? 'active' : ''}`}
             onClick={() => setStatusFilter(statusFilter === 'trending' ? 'all' : 'trending')}
@@ -205,7 +222,6 @@ const ProjectsPage = () => {
             <TrendingUp size={14} />
             Trending
           </button>
-
           <button
             className={`status-badge new ${statusFilter === 'new' ? 'active' : ''}`}
             onClick={() => setStatusFilter(statusFilter === 'new' ? 'all' : 'new')}
@@ -261,55 +277,46 @@ const ProjectsPage = () => {
                   </div>
                 )}
               </div>
+             <div className="project-card-content">
+  <h3 className="project-card-title">{project.title}</h3>
+  <p className="project-card-description">{project.description}</p>
+  <div className="project-meta">
+    <div className="project-location">
+      <MapPin size={14} />
+      <span>{project.location}</span>
+    </div>
+    <span className="project-category-badge">{project.category}</span>
+  </div>
+  <div className="project-funding">
+    <div className="funding-amounts">
+      <span className="amount-raised">₦{project.raised.toLocaleString()}</span>
+      <span className="amount-goal">of ₦{project.goal.toLocaleString()}</span>
+    </div>
+    <div className="progress-bar">
+      <div
+        className="progress-fill"
+        style={{
+          width: `${calculateProgress(project.raised, project.goal)}%`,
+        }}
+      />
+    </div>
+    <div className="progress-percentage">
+      {calculateProgress(project.raised, project.goal)}% funded
+    </div>
+  </div>
 
-              <div className="project-card-content">
-                <h3 className="project-card-title">{project.title}</h3>
-
-                {/* Truncation now handled by CSS */}
-                <p className="project-card-description">
-                  {project.description}
-                </p>
-
-                <div className="project-meta">
-                  <div className="project-location">
-                    <MapPin size={14} />
-                    <span>{project.location}</span>
-                  </div>
-                  <span className="project-category-badge">
-                    {project.category}
-                  </span>
-                </div>
-
-                <div className="project-funding">
-                  <div className="funding-amounts">
-                    <span className="amount-raised">
-                      ₦{project.raised.toLocaleString()}
-                    </span>
-                    <span className="amount-goal">
-                      of ₦{project.goal.toLocaleString()}
-                    </span>
-                  </div>
-
-                  <div className="progress-bar">
-                    <div
-                      className="progress-fill"
-                      style={{
-                        width: `${calculateProgress(project.raised, project.goal)}%`,
-                      }}
-                    />
-                  </div>
-
-                  <div className="progress-percentage">
-                    {calculateProgress(project.raised, project.goal)}% funded
-                  </div>
-                </div>
-
-                <button className="view-details-btn">View Details</button>
-              </div>
+  {/* NEW: Direct Donate Button */}
+  <button
+    className="donate-btn"
+    onClick={() => navigate(`/dashboard/donations`)}
+  >
+    Donate Now
+  </button>
+</div>
             </div>
           ))
         )}
-      </div>
+      </div>  
     </div>
   );
 };

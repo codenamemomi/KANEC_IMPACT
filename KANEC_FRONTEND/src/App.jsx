@@ -20,14 +20,14 @@ import SignInPage from './pages/SignInPage';
 import VerificationPage from './pages/VerificationPage';
 import DashboardLayout from './pages/dashboard/DashboardLayout';
 import Dashboard from './pages/dashboard/Dashboard';
-import DashboardProjects from './pages/dashboard/ProjectsPage';
+import DashboardProjects from './pages/dashboard/ProjectsPage'; // Fixed duplicate
 import Donations from './pages/dashboard/Donations';
 import AIInsights from './pages/dashboard/AIInsights';
 import Reports from './pages/dashboard/Reports';
-import Settings from './pages/dashboard/Settings.jsx';
+import Settings from './pages/dashboard/Settings';
 
-// ── NEW: About – Same folder as Navbar, Hero, etc. ─────────────────────────
-import About from './newcomponents/About';   // ← CORRECT PATH
+// ── NEW: About – Fixed path & lowercase route ─────────────────────────────
+import About from './newcomponents/About'; // ← Correct import
 
 // ── Context & Auth ────────────────────────────────────────────────────────
 import { ThemeProvider } from './pages/dashboard/ThemeContext';
@@ -45,9 +45,7 @@ const AppContent = () => {
 
   const isDashboard = location.pathname.startsWith('/dashboard');
   const isAuthPage =
-    location.pathname === '/signin' ||
-    location.pathname === '/login' ||
-    location.pathname === '/verify-email';
+    ['/signin', '/login', '/verify-email'].includes(location.pathname);
 
   const showLayout = !isDashboard && !isAuthPage;
 
@@ -73,7 +71,7 @@ const AppContent = () => {
           }
         />
 
-        {/* ── Public pages ── */}
+        {/* ── Public Pages ── */}
         <Route
           path="/projects"
           element={
@@ -83,8 +81,10 @@ const AppContent = () => {
             </PageWrapper>
           }
         />
+
+        {/* ── DONATIONS PAGE – Global (outside dashboard) ── */}
         <Route
-          path="/donors"
+          path="/donations"
           element={
             <PageWrapper>
               <Donations />
@@ -93,9 +93,9 @@ const AppContent = () => {
           }
         />
 
-        {/* ── ABOUT PAGE – Now correctly imported ── */}
+        {/* ── ABOUT PAGE – Fixed path & lowercase ── */}
         <Route
-          path="/About"
+          path="/about"
           element={
             <PageWrapper>
               <About />
@@ -104,12 +104,12 @@ const AppContent = () => {
           }
         />
 
-        {/* ── Auth pages ── */}
+        {/* ── Auth Pages ── */}
         <Route path="/signin" element={<SignInPage />} />
-        <Route path="/login" element={<div style={{textAlign:'center',marginTop:'100px'}}>Login Page</div>} />
+        <Route path="/login" element={<div style={{ textAlign: 'center', marginTop: '100px' }}>Login Page</div>} />
         <Route path="/verify-email" element={<VerificationPage />} />
 
-        {/* ── Dashboard (protected) ── */}
+        {/* ── Dashboard (Protected) ── */}
         <Route
           path="/dashboard"
           element={
@@ -132,7 +132,7 @@ const AppContent = () => {
   );
 };
 
-// ── Root ───────────────────────────────────────────────────────────────────
+// ── Root App ───────────────────────────────────────────────────────────────
 const App = () => (
   <AuthProvider>
     <Router>

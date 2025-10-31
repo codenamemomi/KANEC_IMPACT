@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// src/pages/VerificationPage.jsx
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Mail, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -9,166 +10,204 @@ import './VerificationPage.css';
 const VerificationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [otp, setOtp] = useState('');
+
+  // ── State ───────────────────────────────────────────────────────
   const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
 
-  // Get email from location state or sessionStorage
+  // useRef **without** TypeScript generic
+  const inputRefs = useRef([]);
+
+  // ── Get email (state → sessionStorage) ───────────────────────
   useEffect(() => {
-    const emailFromState = location.state?.email;
-    const emailFromStorage = sessionStorage.getItem('pendingVerificationEmail');
-    
-    if (emailFromState) {
-      setEmail(emailFromState);
-      sessionStorage.setItem('pendingVerificationEmail', emailFromState);
-    } else if (emailFromStorage) {
-      setEmail(emailFromStorage);
+    const fromState = location.state?.email;
+    const fromStorage = sessionStorage.getItem('pendingVerificationEmail');
+
+    if (fromState) {
+      setEmail(fromState);
+      sessionStorage.setItem('pendingVerificationEmail', fromState);
+    } else if (fromStorage) {
+      setEmail(fromStorage);
     } else {
-      // No email found, redirect to signin
       navigate('/signin');
     }
   }, [location, navigate]);
 
-  // Countdown timer for resend
+  // ── Countdown timer ─────────────────────────────────────────────
   useEffect(() => {
     if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
+      const id = setTimeout(() => setCountdown(c => c - 1), 1000);
+      return () => clearTimeout(id);
     }
   }, [countdown]);
 
-  const handleVerify = async (e) => {
+  // ── OTP helpers ─────────────────────────────────────────────────
+  const focusNext = idx => {
+    if (idx < 5) inputRefs.current[idx + 1]?.focus();
+  };
+  const focusPrev = idx => {
+    if (idx > 0) inputRefs.current[idx - 1]?.focus();
+  };
+
+  const handleChange = (idx, val) => {
+    if (!/^\d?$/.test(val)) return;
+    const newOtp = [...otp];
+    newOtp[idx] = val;
+    setOtp(newOtp);
+    if (val) focusNext(idx);
+  };
+
+  const handleKeyDown = (e, idx) => {
+    if (e.key === 'Backspace' && !otp[idx] && idx > 0) focusPrev(idx);
+  };
+
+  const handlePaste = e => {
+    const paste = e.clipboardData
+      .getData('text')
+      .replace(/\D/g, '')
+      .slice(0, 6);
+    if (paste.length === 6) {
+      setOtp(paste.split(''));
+      inputRefs.current[5]?.focus();
+    }
+  };
+
+  // ── Verify ───────────────────────────────────────────────────────
+  const handleVerify = async e => {
     e.preventDefault();
-    
-    if (otp.length !== 6) {
-      toast.error('Please enter a 6-digit verification code');
+    if (otp.some(d => d === '')) {
+      toast.error('Please enter a 6-digit code');
       return;
     }
 
     setLoading(true);
-
     try {
-      // Use query parameters for the POST request
       const { data } = await axios({
         method: API_CONFIG.auth.verifyEmail.method,
-        url: `${API_BASE_URL}${API_CONFIG.auth.verifyEmail.url}?email=${encodeURIComponent(email.trim().toLowerCase())}&otp_code=${otp}`,
+        url: `${API_BASE_URL}${API_CONFIG.auth.verifyEmail.url}?email=${encodeURIComponent(
+          email.trim().toLowerCase()
+        )}&otp_code=${otp.join('')}`,
       });
 
-      console.log('Verification successful:', data);
       toast.success('Email verified successfully!');
-      
-      // Clear pending verification
       sessionStorage.removeItem('pendingVerificationEmail');
-      
-      // Redirect to signin
-      navigate('/signin', { 
-        state: { message: 'Email verified successfully! You can now sign in.' }
+      navigate('/signin', {
+        state: { message: 'Email verified – you can now sign in.' },
       });
     } catch (err) {
-      console.error('Verification failed:', err);
-      console.error('Error details:', err.response?.data);
-      
-      const msg = err.response?.data?.detail || err.response?.data?.message || 'Verification failed. Please try again.';
+      const msg =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        'Verification failed. Try again.';
       toast.error(msg);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleResendCode = async () => {
+  // ── Resend ───────────────────────────────────────────────────────
+  const handleResend = async () => {
     if (countdown > 0) return;
-
     setResendLoading(true);
-
     try {
-      // Use query parameters for resend as well
       await axios({
         method: API_CONFIG.auth.resendVerification.method,
-        url: `${API_BASE_URL}${API_CONFIG.auth.resendVerification.url}?email=${encodeURIComponent(email.trim().toLowerCase())}`,
+        url: `${API_BASE_URL}${API_CONFIG.auth.resendVerification.url}?email=${encodeURIComponent(
+          email.trim().toLowerCase()
+        )}`,
       });
-
       toast.success('Verification code sent!');
-      setCountdown(60); // 60 seconds countdown
+      setCountdown(60);
     } catch (err) {
-      console.error('Resend failed:', err);
-      console.error('Error details:', err.response?.data);
-      
-      const msg = err.response?.data?.detail || err.response?.data?.message || 'Failed to resend code. Please try again.';
+      const msg =
+        err.response?.data?.detail ||
+        err.response?.data?.message ||
+        'Failed to resend code.';
       toast.error(msg);
     } finally {
       setResendLoading(false);
     }
   };
 
-  const handleBackToSignIn = () => {
+  // ── Back ────────────────────────────────────────────────────────
+  const handleBack = () => {
     sessionStorage.removeItem('pendingVerificationEmail');
     navigate('/signin');
   };
 
+  // ── Render ───────────────────────────────────────────────────────
   return (
     <div className="verification-wrapper">
       <div className="verification-container">
-        <button
-          className="back-to-signin"
-          type="button"
-          onClick={handleBackToSignIn}
-        >
+        {/* ── Back link ── */}
+        <button className="back-to-signin" onClick={handleBack}>
           <ArrowLeft size={16} />
           <span>Back to Sign In</span>
         </button>
 
+        {/* ── Card ── */}
         <div className="verification-card">
+          {/* Logo */}
           <div className="verification-logo">
             <img src="/reallogo.png" alt="KANEC IMPACT LEDGER" className="logo-image" />
           </div>
 
+          {/* Header */}
           <div className="verification-header">
             <div className="verification-icon">
               <Mail size={48} color="#22c55e" />
             </div>
             <h1 className="verification-title">Verify Your Email</h1>
             <p className="verification-subtitle">
-              We've sent a 6-digit verification code to<br />
-              <strong>{email}</strong>
+              We've sent a <strong>6-digit verification code</strong> to
             </p>
+            <p className="verification-email">{email}</p>
           </div>
 
+          {/* ── OTP ── */}
           <form onSubmit={handleVerify} className="verification-form">
             <div className="form-group">
-              <label>Verification Code</label>
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder="000000"
-                maxLength={6}
-                required
-                className="otp-input"
-              />
-              <div className="otp-hint">Enter the 6-digit code from your email</div>
+              <label className="otp-label">Verification Code</label>
+              <div className="otp-inputs" onPaste={handlePaste}>
+                {otp.map((digit, i) => (
+                  <input
+                    key={i}
+                    ref={el => (inputRefs.current[i] = el)}
+                    type="text"
+                    maxLength={1}
+                    value={digit}
+                    onChange={e => handleChange(i, e.target.value)}
+                    onKeyDown={e => handleKeyDown(e, i)}
+                    className="otp-digit"
+                  />
+                ))}
+              </div>
+              <p className="otp-hint">Enter the 6-digit code from your email</p>
             </div>
 
-            <button 
-              type="submit" 
-              className="verify-btn" 
-              disabled={loading || otp.length !== 6}
+            <button
+              type="submit"
+              className="verify-btn"
+              disabled={loading || otp.some(d => d === '')}
             >
-              {loading ? 'Verifying...' : 'Verify Email'}
+              {loading ? 'Verifying…' : 'Verify Email'}
             </button>
           </form>
 
+          {/* ── Resend ── */}
           <div className="verification-footer">
             <p>Didn't receive the code?</p>
             <button
               type="button"
-              className="resend-btn"
-              onClick={handleResendCode}
+              className="resend-otp-link"
+              onClick={handleResend}
               disabled={resendLoading || countdown > 0}
             >
               {resendLoading ? (
-                'Sending...'
+                'Sending…'
               ) : countdown > 0 ? (
                 <>
                   <Clock size={14} />
@@ -180,24 +219,27 @@ const VerificationPage = () => {
             </button>
           </div>
 
+          {/* ── Tips ── */}
           <div className="verification-tips">
             <div className="tip">
-              <CheckCircle size={16} color="#22c55e" />
-              <span>Check your spam folder if you don't see the email</span>
+              <CheckCircle size={16} className="tip-success" />
+              <span>Check your <strong>spam/junk</strong> folder</span>
             </div>
             <div className="tip">
-              <CheckCircle size={16} color="#22c55e" />
-              <span>The code will expire after 10 minutes</span>
+              <CheckCircle size={16} className="tip-success" />
+              <span>Code expires in <strong>10 minutes</strong></span>
             </div>
             <div className="tip">
-              <XCircle size={16} color="#ef4444" />
+              <XCircle size={16} className="tip-error" />
               <span>Make sure you entered the correct email address</span>
             </div>
           </div>
         </div>
 
+        {/* Footer outside card */}
         <p className="verification-footer-text">
-          Having trouble? Contact support at support@kanec.org
+          Having trouble? Contact support at{' '}
+          <a href="mailto:support@kanec.org">support@kanec.org</a>
         </p>
       </div>
     </div>

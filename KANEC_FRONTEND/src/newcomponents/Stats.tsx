@@ -16,8 +16,8 @@ const Stats = () => {
   ];
 
   return (
-    <section className="stats" ref={ref}>
-      <div className="stats-container">
+    <section className="digits-section" ref={ref}>
+      <div className="digits-container">
         {stats.map((stat, index) => (
           <CountUpItem
             key={index}
@@ -65,13 +65,13 @@ const CountUpItem = ({ target, label, inView, delay }: {
 
   return (
     <motion.div
-      className="stat-item"
+      className="digits-item"
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay }}
     >
-      <h3 className="stat-value">{formattedCount}</h3>
-      <p className="stat-label">{label}</p>
+      <h3 className="digits-value">{formattedCount}</h3>
+      <p className="digits-label">{label}</p>
     </motion.div>
   );
 };

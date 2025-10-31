@@ -1,9 +1,9 @@
-.stats {
+.digits-section {
   padding: 4rem 2rem;
   background: hsl(var(--background));
 }
 
-.stats-container {
+.digits-container {
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
@@ -11,19 +11,19 @@
   gap: 3rem;
 }
 
-.stat-item {
+.digits-item {
   text-align: center;
   padding: 2rem;
   border-radius: 12px;
   transition: var(--transition-smooth);
 }
 
-.stat-item:hover {
+.digits-item:hover {
   background: hsl(var(--secondary));
   transform: translateY(-4px);
 }
 
-.stat-value {
+.digits-value {
   font-size: 3.5rem;
   font-weight: 700;
   color: hsl(var(--accent));
@@ -31,7 +31,7 @@
   line-height: 1;
 }
 
-.stat-label {
+.digits-label {
   font-size: 1rem;
   color: hsl(var(--muted-foreground));
   margin: 0;
@@ -39,16 +39,16 @@
 }
 
 @media (max-width: 800px) {
-  .stats {
+  .digits-section {
     padding: 3rem 1rem;
   }
 
-  .stats-container {
+  .digits-container {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
 
-  .stat-value {
+  .digits-value {
     font-size: 2.5rem;
   }
 }

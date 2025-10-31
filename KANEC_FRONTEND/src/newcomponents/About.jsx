@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { Users, Globe, DollarSign } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./About.css";
 
 const About = () => {
@@ -29,12 +31,50 @@ const About = () => {
       role: "UI/UX DESIGNER",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop"
     },
+    {
+      name: "Isaac Ugwu Chinenye",
+      role: "BACKEND & BLOCKCHAIN DEVELOPER",
+      image: "/kanecteam3.jpg"
+    }
   ];
+
+  // Background images for slideshow
+  const backgroundImages = [
+    "https://images.unsplash.com/photo-1491841573335-f6415a3d0f3d?w=1920&h=1080&fit=crop", // open book
+    "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1920&h=1080&fit=crop", // charity hands
+    "https://images.unsplash.com/photo-1559027615-5f23b7e12a5e?w=1920&h=1080&fit=crop", // community
+    "https://images.unsplash.com/photo-1593113598332-cd25a5f3f375?w=1920&h=1080&fit=crop", // blockchain abstract
+    "https://images.unsplash.com/photo-1532629345422-5650a5800608?w=1920&h=1080&fit=crop"  // donation
+  ];
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % backgroundImages.length);
+    }, 1000); // Change every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [backgroundImages.length]);
 
   return (
     <div className="about-page">
-      {/* ---------- HERO ---------- */}
+      {/* ---------- HERO WITH SLIDESHOW BACKGROUND ---------- */}
       <section className="about-hero">
+        <div className="about-hero-slideshow">
+          {backgroundImages.map((image, index) => (
+            <div
+              key={index}
+              className="about-hero-slide"
+              style={{
+                backgroundImage: `url(${image})`,
+                opacity: index === currentImageIndex ? 1 : 0,
+                transform: `translateX(${(index - currentImageIndex) * 100}%)`,
+              }}
+            />
+          ))}
+        </div>
+
         <div className="about-container">
           <motion.div
             className="about-hero-content"
@@ -50,7 +90,6 @@ const About = () => {
               mission is to connect donors with verified projects through the power
               of Hedera's distributed ledger technology.
             </p>
-            <button className="about-hero-button">Read Donating</button>
           </motion.div>
         </div>
       </section>
@@ -268,7 +307,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* ---------- CTA (still uses the animated gradient) ---------- */}
+      {/* ---------- CTA WITH LINKS ---------- */}
       <section className="about-cta-section">
         <div className="about-container">
           <motion.div
@@ -284,12 +323,12 @@ const About = () => {
               blockchain-verified donations
             </p>
             <div className="about-cta-buttons">
-              <button className="about-cta-button about-primary">
+              <Link to="/signin" className="about-cta-button about-primary">
                 Start Donating
-              </button>
-              <button className="about-cta-button about-secondary">
+              </Link>
+              <Link to="/projects" className="about-cta-button about-secondary">
                 Explore Projects
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

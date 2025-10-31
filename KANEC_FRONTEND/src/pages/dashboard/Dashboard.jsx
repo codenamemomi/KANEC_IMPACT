@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // Added useNavigate
 import { ArrowRight, TrendingUp, FolderOpen, CheckCircle, ExternalLink, Calendar, Hash } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { API_CONFIG, API_BASE_URL } from '../../api/config';
@@ -9,7 +10,8 @@ import RecommendationCard from './components/RecommendationCard';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { user, logout } = useAuth(); // Add logout function
+  const { user, logout } = useAuth();
+  const navigate = useNavigate(); // Added navigate hook
   const [dashboardData, setDashboardData] = useState({
     totalDonations: 0,
     projectsSupported: 0,
@@ -19,8 +21,42 @@ const Dashboard = () => {
     insights: null,
     loading: true
   });
+  const [currentRecommendationIndex, setCurrentRecommendationIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Define calculateGrowthRate before it's used
+  // Carousel effect for recommendations
+  useEffect(() => {
+    if (dashboardData.recommendations.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      
+      setTimeout(() => {
+        setCurrentRecommendationIndex(prev => 
+          prev === dashboardData.recommendations.length - 1 ? 0 : prev + 1
+        );
+        setIsTransitioning(false);
+      }, 500); // Half of the transition time for fade out
+    }, 10000); // Change every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [dashboardData.recommendations.length]);
+
+  const handleRecommendationClick = (recommendation) => {
+    // Store the selected project in localStorage or state management
+    // so the donations page can pre-select it
+    const projectData = {
+      name: recommendation.title,
+      id: recommendation.id,
+      category: recommendation.category
+    };
+    
+    localStorage.setItem('selectedProject', JSON.stringify(projectData));
+    
+    // Navigate to donations page
+    navigate('/dashboard/donations');
+  };
+
   const calculateGrowthRate = (insights) => {
     if (!insights?.monthly_trends || insights.monthly_trends.length < 2) {
       return '+0%';
@@ -43,7 +79,7 @@ const Dashboard = () => {
     project: donation.project_name || 'Unknown Project',
     amount: formatCurrency(donation.amount || 0),
     status: donation.status || 'Completed',
-    date: new Date(donation.donated_at).toLocaleDateString('en-CA'), // YYYY-MM-DD format
+    date: new Date(donation.donated_at).toLocaleDateString('en-CA'),
     transactionHash: donation.tx_hash ? `${donation.tx_hash.slice(0, 6)}...${donation.tx_hash.slice(-4)}` : 'Pending...'
   });
 
@@ -100,7 +136,6 @@ const Dashboard = () => {
     try {
       setDashboardData(prev => ({ ...prev, loading: true }));
       
-      // Fetch all data in parallel
       const [insightsResponse, donationsResponse, projectsResponse] = await Promise.all([
         axios({
           method: API_CONFIG.analytics.userInsights.method,
@@ -120,9 +155,6 @@ const Dashboard = () => {
       const donations = donationsResponse.data || [];
       const projects = projectsResponse.data || [];
 
-      console.log('Dashboard data fetched:', { insights, donations, projects });
-
-      // Calculate stats from insights and donations
       const donationSummary = insights.insights?.donation_summary || {};
       const totalDonated = donationSummary.total_donated || 0;
       const totalDonations = donationSummary.total_donations || 0;
@@ -131,7 +163,7 @@ const Dashboard = () => {
       setDashboardData({
         totalDonations: totalDonated,
         projectsSupported: projectsSupported,
-        verifiedTransactions: totalDonations, // Using total donations count as verified transactions
+        verifiedTransactions: totalDonations,
         recentDonations: donations.slice(0, 4),
         recommendations: insights.insights?.recommended_projects || getDefaultRecommendations(projects),
         insights: insights.insights,
@@ -141,14 +173,11 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
       
-      // If it's an authentication error, log the user out
       if (error.response?.status === 401) {
-        console.log('Authentication failed, logging out...');
         logout();
         return;
       }
       
-      // Fallback to default data for other errors
       setDashboardData({
         totalDonations: 0,
         projectsSupported: 0,
@@ -202,6 +231,7 @@ const Dashboard = () => {
           </p>
         </div>
       </div>
+
       {/* Hero Section */}
       <div className="impact-hero">
         <div className="heros-content">
@@ -209,16 +239,11 @@ const Dashboard = () => {
           <p className="hero-text">
             {getImpactMessage()}
           </p>
-          {/* {dashboardData.insights?.user_percentile && (
-            <div className="percentile-badge">
-              Top {Math.round(100 - dashboardData.insights.user_percentile.percentile)}% of donors
-            </div>
-          )} */}
         </div>
-        <button className="hero-btn">
+        <Link to="/dashboard/donations" className="hero-btn">
           Start New Donation
           <ArrowRight size={16} />
-        </button>
+        </Link>
       </div>
 
       {/* Stats Cards */}
@@ -237,23 +262,46 @@ const Dashboard = () => {
         <div className="recommendations-section">
           <div className="section-header">
             <h3 className="section-title">
-              <span className="sparkle">✨</span> Recommendations
+              Recommendations
             </h3>
             <p className="section-subtitle">Based on your impact history and preferences</p>
           </div>
-          <div className="recommendations-list">
-            {dashboardData.recommendations.map((rec, index) => (
-              <RecommendationCard 
-                key={rec.id || index} 
-                title={rec.title}
-                matchScore={rec.matchScore || '85% match'}
-                description={rec.description}
-                category={rec.category}
-                amount_raised={rec.amount_raised}
-                target_amount={rec.target_amount}
-                completion_percentage={rec.completion_percentage}
-              />
-            ))}
+          <div className="recommendations-carousel">
+            {dashboardData.recommendations.length > 0 ? (
+              <div 
+                className={`recommendation-item ${isTransitioning ? 'fade-out' : 'fade-in'}`}
+                onClick={() => handleRecommendationClick(dashboardData.recommendations[currentRecommendationIndex])}
+                style={{ cursor: 'pointer' }}
+              >
+                <RecommendationCard 
+                  key={dashboardData.recommendations[currentRecommendationIndex].id || currentRecommendationIndex}
+                  title={dashboardData.recommendations[currentRecommendationIndex].title}
+                  matchScore={dashboardData.recommendations[currentRecommendationIndex].matchScore || '85% match'}
+                  description={dashboardData.recommendations[currentRecommendationIndex].description}
+                  category={dashboardData.recommendations[currentRecommendationIndex].category}
+                  amount_raised={dashboardData.recommendations[currentRecommendationIndex].amount_raised}
+                  target_amount={dashboardData.recommendations[currentRecommendationIndex].target_amount}
+                  completion_percentage={dashboardData.recommendations[currentRecommendationIndex].completion_percentage}
+                />
+              </div>
+            ) : (
+              <div className="no-recommendations">
+                <p>No recommendations available at the moment.</p>
+              </div>
+            )}
+            
+            {/* Carousel indicators */}
+            {dashboardData.recommendations.length > 1 && (
+              <div className="carousel-indicators">
+                {dashboardData.recommendations.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`indicator ${index === currentRecommendationIndex ? 'active' : ''}`}
+                    onClick={() => setCurrentRecommendationIndex(index)}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -295,10 +343,10 @@ const Dashboard = () => {
           ) : (
             <div className="no-donations">
               <p>No donations yet. Start making an impact!</p>
-              <button className="hero-btn">
+              <Link to="/dashboard/donations" className="hero-btn">
                 Make Your First Donation
                 <ArrowRight size={16} />
-              </button>
+              </Link>
             </div>
           )}
         </div>

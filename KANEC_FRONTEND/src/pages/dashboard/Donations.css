@@ -5,12 +5,26 @@
 .donations-page {
   padding: 2rem;
   background: hsl(var(--background));
+  color: hsl(var(--foreground));
   min-height: 100vh;
 }
 
 .donations-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 2rem;
+  gap: 1rem;
+  background: hsl(var(--card));
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--border));
 }
+
+.donations-header > div {
+  flex: 1;
+}
+
 .donations-title {
   font-size: 2rem;
   font-weight: 700;
@@ -20,6 +34,54 @@
 .donations-subtitle {
   font-size: 0.875rem;
   color: hsl(var(--muted-foreground));
+}
+
+/* Donation History Button */
+.view-donations-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 1px solid hsl(var(--primary));
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  height: fit-content;
+}
+
+.view-donations-button:hover {
+  background: hsl(var(--primary) / 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
+}
+
+/* Make Donation Button (for history view) */
+.make-donation-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 1px solid hsl(var(--primary));
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  height: fit-content;
+}
+
+.make-donation-button:hover {
+  background: hsl(var(--primary) / 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px hsl(var(--primary) / 0.3);
 }
 
 .donations-content {
@@ -37,6 +99,7 @@
   border-radius: 0.75rem;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  color: hsl(var(--foreground));
 }
 
 .card-header {
@@ -71,7 +134,10 @@
   font-size: 0.9375rem;
   text-align: center;
 }
-.project-info { text-align: center; }
+.project-info { 
+  text-align: center;
+  color: hsl(var(--foreground));
+}
 .project-name {
   font-size: 1.25rem;
   font-weight: 600;
@@ -82,7 +148,7 @@
   display: inline-block;
   padding: 0.25rem 0.75rem;
   background: hsl(var(--primary));
-  color: white;
+  color: hsl(var(--primary-foreground));
   border-radius: 1rem;
   font-size: 0.75rem;
   font-weight: 600;
@@ -95,12 +161,13 @@
 
 .blockchain-note {
   font-size: 0.8125rem;
-  color: hsl(var(--muted-foreground));
+  color: hsl(0deg 1.71% 5.42%);
   margin-bottom: 1.5rem;
   text-align: center;
   padding: 0.5rem;
   background: hsl(var(--secondary));
   border-radius: 0.375rem;
+  border: 1px solid hsl(var(--border));
 }
 
 .donation-form {
@@ -135,13 +202,17 @@
   padding: 0.75rem 2.5rem 0.75rem 1rem;
   border: 1px solid hsl(var(--border));
   border-radius: 0.5rem;
-  background: hsl(var(--input)) !important;
-  color: hsl(var(--foreground)) !important;
   font-size: 0.875rem;
   transition: all 0.2s;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.2em;
 }
 
 .custom-input:focus,
@@ -202,6 +273,7 @@
   background: hsl(var(--secondary));
   border-radius: 0.5rem;
   border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
 }
 .info-row {
   display: flex;
@@ -209,8 +281,15 @@
   align-items: center;
   font-size: 0.875rem;
 }
-.info-label { color: hsl(var(--muted-foreground)); }
-.info-value { color: hsl(var(--foreground)); font-weight: 500; font-family: monospace; }
+.info-label { 
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+}
+.info-value { 
+  color: hsl(var(--foreground)); 
+  font-weight: 600; 
+  font-family: monospace; 
+}
 
 /* Donate Button */
 .donate-button {
@@ -234,7 +313,8 @@
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 .donate-button:disabled {
-  background: #ccc;
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
   cursor: not-allowed;
   transform: none;
 }
@@ -251,14 +331,23 @@
 }
 .spinner {
   width: 40px; height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #007bff;
+  border: 4px solid hsl(var(--muted));
+  border-top: 4px solid hsl(var(--primary));
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
 }
-.spinner.small { width: 20px; height: 20px; border-width: 2px; margin: 0 auto; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.spinner.small { 
+  width: 20px; 
+  height: 20px; 
+  border-width: 2px; 
+  margin: 0 auto; 
+}
+@keyframes spin { 
+  to { 
+    transform: rotate(360deg); 
+  } 
+}
 
 .no-projects-note {
   font-size: 0.75rem;
@@ -266,9 +355,304 @@
   margin-top: 0.25rem;
 }
 
+/* Donation History View */
+.donation-history-view {
+  min-height: 100vh;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+  gap: 1rem;
+  background: hsl(var(--card));
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  margin: 1rem 0;
+}
+
+.donations-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  background: hsl(var(--card));
+}
+
+.donations-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: hsl(var(--foreground));
+}
+
+.donations-history-table th {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.donations-history-table td {
+  padding: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: 0.875rem;
+  color: hsl(var(--foreground));
+  background: hsl(var(--card));
+}
+
+.project-name-cell,
+.amount-cell,
+.currency-cell,
+.date-cell,
+.transaction-cell {
+  color: hsl(var(--foreground)) !important;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.confirmed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* Success Modal Styles */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.success-donation-dialog {
+  background: hsl(var(--card));
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  color: hsl(var(--foreground));
+}
+
+.dialog-header.success {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.success-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.dialog-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+
+.dialog-description {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+}
+
+.confirmation-details {
+  background: hsl(var(--secondary));
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid hsl(var(--border));
+}
+
+.confirmation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.confirmation-row:last-child {
+  margin-bottom: 0;
+}
+
+.confirmation-label {
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+}
+
+.confirmation-value {
+  color: black;
+  font-weight: 600;
+}
+
+.success-status {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.view-history-button {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-history-button:hover {
+  background: hsl(var(--primary) / 0.9);
+  transform: translateY(-1px);
+}
+
+.close-button {
+  background: transparent;
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Error Message */
+.error-message {
+  text-align: center;
+  padding: 2rem;
+  color: hsl(var(--destructive));
+  background: hsl(var(--card));
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--border));
+  margin: 1rem 0;
+}
+
+.retry-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem auto 0;
+  padding: 0.75rem 1.5rem;
+  background: hsl(var(--destructive));
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.retry-button:hover {
+  background: hsl(var(--destructive) / 0.9);
+}
+
+/* Payment Section Specific Fixes */
+.amount-input-container .custom-input {
+  background: hsl(var(--input)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.custom-select .select-trigger {
+  background: hsl(var(--input)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.transaction-info .info-value {
+  color: black !important;
+  background: transparent !important;
+}
+
+/* Form field text visibility */
+.form-field label {
+  color: hsl(var(--foreground)) !important;
+}
+
+
+/* Specific fix for select options */
+select option {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
 /* Responsive */
 @media (max-width: 800px) {
-  .donations-page { padding: 1rem; }
-  .donations-content { grid-template-columns: 1fr; gap: 1rem; }
-  .amount-section { grid-template-columns: 1fr; }
+  .donations-page { 
+    padding: 1rem; 
+  }
+  .donations-content { 
+    grid-template-columns: 1fr; 
+    gap: 1rem; 
+  }
+  .amount-section { 
+    grid-template-columns: 1fr; 
+  }
+  
+  .donations-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .view-donations-button,
+  .make-donation-button {
+    align-self: flex-end;
+    width: fit-content;
+  }
+}
+
+@media (max-width: 480px) {
+  .donations-header {
+    align-items: stretch;
+  }
+  
+  .view-donations-button,
+  .make-donation-button {
+    align-self: stretch;
+    width: auto;
+    justify-content: center;
+  }
+  
+  .donations-history-table {
+    font-size: 0.75rem;
+  }
+  
+  .donations-history-table th,
+  .donations-history-table td {
+    padding: 0.5rem;
+  }
+  
+  .success-donation-dialog {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
 }

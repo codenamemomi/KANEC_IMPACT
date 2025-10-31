@@ -36,6 +36,7 @@ export const API_CONFIG = {
   // ===================== DONATIONS =====================
   donations: {
     make: { method: 'POST', url: '/api/v1/donations/' },
+    history: { method: 'GET', url: '/api/v1/donations/my-donations' }, // ADDED THIS LINE
   },
 
   // ===================== TRACE =====================

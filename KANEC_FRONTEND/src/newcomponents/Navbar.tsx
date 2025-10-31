@@ -55,7 +55,7 @@ const Navbar = () => {
             <Link to="/signin" className="btn-signin" onClick={closeMenu}>
               Log In
             </Link>
-            <Link to="/donate" className="btn-contact" onClick={closeMenu}>
+            <Link to="mailto:kanec.org@gmail.com" className="btn-contact" onClick={closeMenu}>
               Contact
             </Link>
           </div>

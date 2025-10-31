@@ -16,9 +16,8 @@
 
 .page-subtitle {
   font-size: 13px;
-  font-weight: 900;
+  font-weight: 700;
   line-height: 2;
-  font-style: italic;
   color: hsl(var(--muted-foreground));
 }
 
@@ -34,7 +33,7 @@
   line-height: 3;
 }
 
-.hero-content h2 {
+.heros-content h2 {
   font-size: 20px;
   font-weight: 700;
   color: white;
@@ -315,6 +314,63 @@
   font-size: 12px;
   color: #6b7280;
 }
+
+/* Add these styles to your Dashboard.css */
+
+.recommendations-carousel {
+  position: relative;
+  min-height: 200px;
+}
+
+.recommendation-item {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.recommendation-item.fade-in {
+  opacity: 1;
+}
+
+.recommendation-item.fade-out {
+  opacity: 0;
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background-color: hsl(var(--muted));
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+  background-color: hsl(var(--primary));
+}
+
+.no-recommendations {
+  text-align: center;
+  padding: 2rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Make recommendation card clickable */
+.recommendation-item {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.recommendation-item:hover {
+  transform: translateY(-2px);
+}
+
 /* Mobile Responsive */
 @media (max-width: 800px) {
   .dashboard-page {

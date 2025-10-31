@@ -81,11 +81,11 @@
    NAV MENU (CENTER + RIGHT)
    ======================================== */
 .nav-menu {
- display: flex;
+  display: flex;
   align-items: center;
   gap: 3rem;
-  width: 80%; /* ← Ensures it takes full width */
-  justify-content: space-between; /* ← Keeps buttons on right */
+  width: 80%;
+  justify-content: space-between;
 }
 
 /* NAV LINKS - EVEN SPACING */
@@ -93,9 +93,9 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  margin: 0 auto; /* ← THIS CENTERS IT */
-  flex: 1;        /* ← Allows it to grow and center */
-  justify-content: center; /* ← Double insurance */              /* ← Home | Projects | About spacing */
+  margin: 0 auto;
+  flex: 1;
+  justify-content: center;
 }
 
 .nav-item {
@@ -165,17 +165,19 @@
 }
 
 /* ========================================
-   MOBILE STYLES
+   RESPONSIVE: MOBILE (≤800px)
    ======================================== */
 @media (max-width: 800px) {
   .navbar-inner {
     padding: 0 1rem 0 0;
   }
 
+  /* Show hamburger */
   .mobile-toggle {
     display: block;
   }
 
+  /* Full-screen sliding menu */
   .nav-menu {
     position: fixed;
     top: 0;
@@ -186,44 +188,78 @@
     background: hsl(var(--background));
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
     padding: 5rem 2rem 2rem;
     gap: 2rem;
     transform: translateX(100%);
     transition: transform 0.3s ease;
     border-left: 1px solid hsl(var(--border));
+    overflow-y: auto;
+    box-shadow: -8px 0 20px rgba(0, 0, 0, 0.1);
   }
 
+  /* Open state */
   .nav-menu.menu-open {
     transform: translateX(0);
   }
 
+  /* Nav links stack */
   .nav-links {
     flex-direction: column;
     width: 100%;
     gap: 0;
+    margin: 0;
+    flex: none;
+    justify-content: flex-start;
   }
 
   .nav-item {
     width: 100%;
     padding: 0.75rem 0;
     font-size: 1.1rem;
+    text-align: left;
   }
 
+  .nav-item::after {
+    bottom: -2px;
+  }
+
+  /* Action buttons full-width */
   .action-buttons {
     flex-direction: column;
     width: 100%;
     gap: 1rem;
+    margin-top: 1.5rem;
   }
 
   .btn-signin,
   .btn-contact {
     width: 100%;
     text-align: center;
-    padding: 0.75rem 0;
+    padding: 0.875rem 0;
     font-size: 1.1rem;
+    border-radius: 25px;
+    font-weight: 600;
   }
 
   .btn-signin {
-    border-radius: 25px;
+    background: black;
+    color: white;
+  }
+
+  .btn-signin:hover {
+    background: hsl(var(--accent));
+    color: black;
+  }
+
+  .btn-contact {
+    background: transparent;
+    color: hsl(var(--accent));
+    border: 2px solid hsl(var(--accent));
+  }
+
+  .btn-contact:hover {
+    background: hsl(var(--accent));
+    color: black;
   }
 }

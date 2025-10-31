@@ -8,6 +8,24 @@ A blockchain-powered platform for transparent, verified donations to African imp
 
 KANEC IMPACT revolutionizes charitable giving by leveraging blockchain technology to create an immutable, transparent record of all donations. Built on Hedera's high-performance distributed ledger, the platform enables donors to track their contributions in real-time while ensuring funds reach verified African impact projects without intermediaries.
 
+## 📌 Project Resources
+
+Below are supporting materials for this project.
+- 📄 **Project Certificate:** [View Certificate](https://drive.google.com/file/d/1BaOTQWrMDxIdmZvuKClrffGV2UcMsKR_/view?usp=sharing)  
+- 📂 **Project Landing Page:** [Access Here](https://youtu.be/bJ9graMRcKw?si=YYGEnwPcbJCwvmZG)  
+- 🧾 **Pitch Deck:** [View Pitch Deck](https://youtu.be/54OkSxsHhEw?si=Stv86T5tFbYsgCOl)
+---
+
+## 🔐 Test Account (for judges)
+
+> **Security note:** Sensitive credentials (passwords, private keys, API keys) are never stored in this repository. To request the test account credentials or wallet key, please contact us directly (see contact info below) or follow the secure access instructions provided.
+
+- Test account email: `KANEC_JUDGES_TEST_ACCOUNT_EMAIL`  
+- Wallet ID: `KANEC_WALLET_ID`  
+- **Important:** The password and private key are not stored here. Request them securely (see below).
+
+---
+
 ### Key Highlights
 - **100% Transparency**: Every transaction is recorded on Hedera's public ledger
 - **Blockchain Verified**: Smart contracts ensure funds go exactly where promised

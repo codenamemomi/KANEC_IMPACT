@@ -1,0 +1,51 @@
+.trust {
+  padding: 4rem 6rem; /* ✅ match side padding with other sections */
+  background: hsl(var(--background));
+}
+
+.trust-container {
+  max-width: 1280px; /* ✅ consistent layout width */
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.trust-container h2 {
+  font-size: 1rem;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.trust-logos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 2.5rem;
+  align-items: center;
+  justify-items: center;
+}
+
+.trust-logo {
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.trust-logo:hover {
+  opacity: 1;
+}
+
+@media (max-width: 800px) {
+  .trust {
+    padding: 3rem 1.5rem;
+  }
+
+  .trust-logos {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}

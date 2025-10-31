@@ -1,0 +1,84 @@
+.join-the-fam {
+  background: var(--gradient-green);
+  padding: 6rem 2rem;
+  color: hsl(var(--primary-foreground));
+}
+
+.hype-zone {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.hype-zone h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: hsl(var(--primary-foreground));
+}
+
+.hype-zone p {
+  font-size: 1.0625rem;
+  margin-bottom: 2.5rem;
+  opacity: 0.95;
+  line-height: 1.6;
+}
+
+.button-blast {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.clicky-boi {
+  padding: 0.875rem 2rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.clicky-boi-main {
+  background: hsl(var(--background));
+  color: hsl(var(--primary));
+}
+
+.clicky-boi-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.clicky-boi-sidekick {
+  background: transparent;
+  color: hsl(var(--primary-foreground));
+  border: 2px solid hsl(var(--primary-foreground));
+}
+
+.clicky-boi-sidekick:hover {
+  background: hsl(var(--primary-foreground));
+  color: hsl(var(--primary));
+}
+
+@media (max-width: 800px) {
+  .join-the-fam {
+    padding: 3rem 1.5rem;
+  }
+
+  .hype-zone h2 {
+    font-size: 2rem;
+  }
+
+  .hype-zone p {
+    font-size: 1rem;
+  }
+
+  .button-blast {
+    flex-direction: column;
+  }
+
+  .clicky-boi {
+    width: 100%;
+  }
+}

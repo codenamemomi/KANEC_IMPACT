@@ -1,0 +1,274 @@
+/* ========================================
+   DONATIONS PAGE – FULLY THEME-AWARE
+   ======================================== */
+
+.donations-page {
+  padding: 2rem;
+  background: hsl(var(--background));
+  min-height: 100vh;
+}
+
+.donations-header {
+  margin-bottom: 2rem;
+}
+.donations-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+.donations-subtitle {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.donations-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1400px;
+}
+
+/* Cards */
+.project-details-card,
+.donation-details-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+.verified-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: #10b981;
+  color: white;
+  border-radius: 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.project-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.9375rem;
+  text-align: center;
+}
+.project-info { text-align: center; }
+.project-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+}
+.project-category {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: hsl(var(--primary));
+  color: white;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.project-description {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+}
+
+.blockchain-note {
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 1.5rem;
+  text-align: center;
+  padding: 0.5rem;
+  background: hsl(var(--secondary));
+  border-radius: 0.375rem;
+}
+
+.donation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+}
+
+.amount-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: end;
+}
+
+/* ========================================
+   INPUTS & SELECTS – DARK MODE FIXED
+   ======================================== */
+.custom-input,
+.select-trigger {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  background: hsl(var(--input)) !important;
+  color: hsl(var(--foreground)) !important;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.custom-input:focus,
+.select-trigger:focus {
+  outline: none;
+  border-color: hsl(var(--primary));
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
+}
+
+.custom-input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Currency Symbol */
+.amount-input-container {
+  position: relative;
+}
+.currency-symbol {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+  z-index: 1;
+}
+.amount-input {
+  padding-left: 2rem !important;
+}
+
+/* Native Arrow (SVG) */
+.select-trigger {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.2em;
+}
+
+/* Dark Mode Arrow */
+[data-theme="dark"] .select-trigger {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23e5e7eb' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+}
+
+/* Remove number arrows */
+.custom-input[type="number"]::-webkit-outer-spin-button,
+.custom-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.custom-input[type="number"] { -moz-appearance: textfield; }
+
+/* Transaction Info */
+.transaction-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: hsl(var(--secondary));
+  border-radius: 0.5rem;
+  border: 1px solid hsl(var(--border));
+}
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+.info-label { color: hsl(var(--muted-foreground)); }
+.info-value { color: hsl(var(--foreground)); font-weight: 500; font-family: monospace; }
+
+/* Donate Button */
+.donate-button {
+  width: 100%;
+  background: #10b981;
+  color: white;
+  font-weight: 500;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.donate-button:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+.donate-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinners */
+.loading-spinner,
+.donating-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+.spinner.small { width: 20px; height: 20px; border-width: 2px; margin: 0 auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.no-projects-note {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .donations-page { padding: 1rem; }
+  .donations-content { grid-template-columns: 1fr; gap: 1rem; }
+  .amount-section { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,140 @@
+.trusted-container {
+  text-align: center;
+  padding: 20px;
+  background-color: white;
+}
+
+.trusted-title {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.org-list {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.org-item {
+  color: #333;
+  font-size: 1em;
+  padding: 5px 10px;
+}
+
+/* === MOBILE RESPONSIVE FOR SCREENS < 800px === */
+@media (max-width: 800px) {
+  .trusted-container {
+    padding: 30px 15px;
+  }
+
+  .trusted-title {
+    font-size: 0.85em;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+
+  .org-list {
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .org-item {
+    font-size: 0.9em;
+    padding: 8px 12px;
+    flex: 0 0 auto;
+    text-align: center;
+  }
+}
+
+/* === TABLET & SMALLER MOBILE === */
+@media (max-width: 768px) {
+  .trusted-container {
+    padding: 25px 15px;
+  }
+
+  .org-list {
+    gap: 12px;
+  }
+
+  .org-item {
+    font-size: 0.85em;
+    padding: 6px 10px;
+  }
+}
+
+/* === MOBILE (480px and below) === */
+@media (max-width: 480px) {
+  .trusted-container {
+    padding: 20px 10px;
+  }
+
+  .trusted-title {
+    font-size: 0.8em;
+    margin-bottom: 12px;
+  }
+
+  .org-list {
+    gap: 8px;
+    row-gap: 10px;
+  }
+
+  .org-item {
+    font-size: 0.8em;
+    padding: 5px 8px;
+    flex: 0 0 calc(33.333% - 8px);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* === VERY SMALL MOBILE (360px and below) === */
+@media (max-width: 360px) {
+  .trusted-container {
+    padding: 15px 8px;
+  }
+
+  .trusted-title {
+    font-size: 0.75em;
+    margin-bottom: 10px;
+  }
+
+  .org-list {
+    gap: 6px;
+    row-gap: 8px;
+  }
+
+  .org-item {
+    font-size: 0.75em;
+    padding: 4px 6px;
+    flex: 0 0 calc(50% - 6px);
+  }
+}
+
+/* === LANDSCAPE MOBILE ORIENTATION === */
+@media (max-width: 800px) and (max-height: 500px) and (orientation: landscape) {
+  .trusted-container {
+    padding: 20px 15px;
+  }
+
+  .org-list {
+    gap: 10px;
+  }
+
+  .org-item {
+    font-size: 0.8em;
+    padding: 4px 8px;
+  }
+}
+
+/* === ENSURE NO HORIZONTAL SCROLLING === */
+@media (max-width: 800px) {
+  .org-list {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}

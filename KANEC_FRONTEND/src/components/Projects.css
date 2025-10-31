@@ -1,0 +1,165 @@
+.projects {
+  padding: 6rem 6rem; /* match hero’s side padding */
+  background: hsl(var(--background));
+}
+
+.projects-container {
+  max-width: 1280px; /* same as your layout container */
+  margin: 0 auto;
+}
+
+
+.projects-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.projects-header h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: hsl(var(--foreground));
+}
+
+.projects-header .highlight {
+  color: hsl(var(--primary));
+}
+
+.projects-header p {
+  font-size: 1rem;
+  color: hsl(var(--muted-foreground));
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.project-card {
+  background: hsl(var(--card));
+  border-radius: calc(var(--radius) * 2);
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+.project-card-content {
+  padding: 3rem;
+}
+
+.project-card-content h3 {
+  font-size: 1.625rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: hsl(var(--foreground));
+}
+
+.project-card-content p {
+  color: hsl(var(--muted-foreground));
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  font-size: 0.9375rem;
+}
+
+.project-badges {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.project-badge {
+  padding: 0.5rem 1rem;
+  background: hsl(var(--secondary));
+  color: hsl(var(--primary));
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.project-amount {
+  margin-bottom: 2rem;
+}
+
+.project-amount h4 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: hsl(var(--foreground));
+  margin: 0 0 0.25rem 0;
+}
+
+.project-amount p {
+  color: hsl(var(--muted-foreground));
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.project-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.project-stat strong {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.25rem;
+}
+
+.project-stat span {
+  font-size: 0.8125rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.project-card-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 800px) {
+  .projects {
+    padding: 3rem 1.5rem;
+  }
+
+  .projects-header h2 {
+    font-size: 2rem;
+  }
+
+  .projects-header p {
+    font-size: 1rem;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-content {
+    padding: 2rem 1.5rem;
+  }
+
+  .project-card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .project-amount h4 {
+    font-size: 2rem;
+  }
+
+  .project-stats {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

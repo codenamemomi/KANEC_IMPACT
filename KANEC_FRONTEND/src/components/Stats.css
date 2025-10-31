@@ -1,0 +1,43 @@
+.stats {
+  background: hsl(var(--secondary));
+  padding: 3rem 6rem; /* ✅ match hero, projects, and footer side padding */
+}
+
+.stats-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4rem;
+  text-align: center;
+}
+
+.stat-item h2 {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: hsl(var(--primary));
+  margin: 0;
+  line-height: 1;
+}
+
+.stat-item p {
+  font-size: 0.9375rem;
+  color: hsl(var(--muted-foreground));
+  margin: 0.5rem 0 0 0;
+  font-weight: 500;
+}
+
+@media (max-width: 800px) {
+  .stats {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .stat-item h2 {
+    font-size: 2.75rem;
+  }
+}

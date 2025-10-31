@@ -1,0 +1,252 @@
+.join-movement {
+  background: linear-gradient(
+    45deg,
+    #1a3c34, /* Darkest green */
+    #2a4d3e, /* Slightly lighter green */
+    #3a6b54, /* Medium dark green */
+    #2a4d3e, /* Back to lighter green */
+    #1a3c34  /* Back to darkest green */
+  );
+  color: #fff;
+  text-align: center;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: 200% 200%; /* Allows the gradient to move */
+  animation: wave 10s ease infinite; /* Animation for wave effect */
+}
+
+.join-movement h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.join-movement p {
+  font-size: 1.1em;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: 2px solid;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.btn.donate {
+  background-color: white;
+  color: green;
+}
+
+/* Animation for the wave effect */
+@keyframes wave {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* === MOBILE RESPONSIVE FOR SCREENS < 800px === */
+@media (max-width: 800px) {
+  .join-movement {
+    padding: 40px 20px;
+    text-align: center;
+    /* Fixed: Added the animation property to the correct selector */
+    animation: wave 15s ease infinite;
+  }
+
+  .join-movement h2 {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+    line-height: 1.3;
+    padding: 0 10px;
+  }
+
+  .join-movement p {
+    font-size: 1rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    padding: 0 15px;
+    max-width: 500px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .btn {
+    padding: 14px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    width: 100%;
+    border-width: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .btn:not(.donate) {
+    border-color: white;
+    background-color: transparent;
+    color: white;
+  }
+
+  .btn:not(.donate):hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .btn.donate {
+    background-color: white;
+    color: #1a3c34;
+    border-color: white;
+    font-weight: 600;
+  }
+
+  .btn.donate:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+  }
+}
+
+/* === MOBILE (480px and below) === */
+@media (max-width: 480px) {
+  .join-movement {
+    padding: 30px 15px;
+  }
+
+  .join-movement h2 {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    padding: 0 5px;
+  }
+
+  .join-movement p {
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+
+  .buttons {
+    max-width: 280px;
+    gap: 12px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+}
+
+/* === VERY SMALL MOBILE (360px and below) === */
+@media (max-width: 360px) {
+  .join-movement {
+    padding: 25px 12px;
+  }
+
+  .join-movement h2 {
+    font-size: 1.4rem;
+  }
+
+  .join-movement p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+
+  .buttons {
+    max-width: 260px;
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 11px 18px;
+    font-size: 0.9rem;
+  }
+}
+
+/* === LANDSCAPE MOBILE ORIENTATION === */
+@media (max-width: 800px) and (max-height: 500px) and (orientation: landscape) {
+  .join-movement {
+    padding: 25px 20px;
+  }
+
+  .buttons {
+    flex-direction: row;
+    max-width: 400px;
+  }
+
+  .btn {
+    width: auto;
+    flex: 1;
+  }
+}
+
+/* === TABLET OPTIMIZATION (801px - 1024px) === */
+@media (min-width: 801px) and (max-width: 1024px) {
+  .join-movement {
+    padding: 40px 30px;
+  }
+
+  .join-movement h2 {
+    font-size: 2.2rem;
+  }
+
+  .join-movement p {
+    font-size: 1.15rem;
+    max-width: 600px;
+  }
+
+  .buttons {
+    gap: 25px;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    font-size: 1.1rem;
+  }
+}
+
+/* === REDUCE MOTION FOR ACCESSIBILITY === */
+@media (prefers-reduced-motion: reduce) {
+  .join-movement {
+    animation: none;
+    background: linear-gradient(45deg, #1a3c34, #2a4d3e, #1a3c34);
+  }
+}
+
+/* === ENHANCED HOVER EFFECTS FOR DESKTOP === */
+@media (min-width: 801px) {
+  .btn {
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn:not(.donate):hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .btn.donate:hover {
+    background-color: #f8f9fa;
+  }
+}

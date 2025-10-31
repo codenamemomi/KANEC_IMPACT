@@ -1,0 +1,229 @@
+/* ========================================
+   NAVBAR CONTAINER
+   ======================================== */
+.site-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+  z-index: 100;
+  padding: 0.5rem 0;
+}
+
+.navbar-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem 0 0;           
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ========================================
+   LOGO (LEFT)
+   ======================================== */
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.brand-texts {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-titles {
+  font-weight: 700;
+  font-size: 1rem;
+  color: hsl(var(--foreground));
+}
+
+.brand-subtitles {
+  font-weight: 400;
+  font-size: 1rem;
+  color: grey;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================
+   MOBILE TOGGLE
+   ======================================== */
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: hsl(var(--foreground));
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 101;
+}
+
+/* ========================================
+   NAV MENU (CENTER + RIGHT)
+   ======================================== */
+.nav-menu {
+ display: flex;
+  align-items: center;
+  gap: 3rem;
+  width: 80%; /* ← Ensures it takes full width */
+  justify-content: space-between; /* ← Keeps buttons on right */
+}
+
+/* NAV LINKS - EVEN SPACING */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin: 0 auto; /* ← THIS CENTERS IT */
+  flex: 1;        /* ← Allows it to grow and center */
+  justify-content: center; /* ← Double insurance */              /* ← Home | Projects | About spacing */
+}
+
+.nav-item {
+  color: hsl(var(--foreground));
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.5rem;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: hsl(var(--accent));
+  transition: width 0.3s;
+}
+
+.nav-item:hover {
+  color: hsl(var(--accent));
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* ACTION BUTTONS */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;                  
+}
+
+/* LOG IN BUTTON */
+.btn-signin {
+  background: black;
+  color: white;
+  font-weight: 600;
+  padding: 0.4rem 3rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.btn-signin:hover {
+  background: hsl(var(--accent));
+  color: black;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+/* CONTACT LINK */
+.btn-contact {
+  color: hsl(var(--accent));
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.btn-contact:hover {
+  opacity: 0.8;
+}
+
+/* ========================================
+   MOBILE STYLES
+   ======================================== */
+@media (max-width: 800px) {
+  .navbar-inner {
+    padding: 0 1rem 0 0;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 70%;
+    max-width: 300px;
+    background: hsl(var(--background));
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5rem 2rem 2rem;
+    gap: 2rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    border-left: 1px solid hsl(var(--border));
+  }
+
+  .nav-menu.menu-open {
+    transform: translateX(0);
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+  }
+
+  .nav-item {
+    width: 100%;
+    padding: 0.75rem 0;
+    font-size: 1.1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .btn-signin,
+  .btn-contact {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 0;
+    font-size: 1.1rem;
+  }
+
+  .btn-signin {
+    border-radius: 25px;
+  }
+}

@@ -354,6 +354,37 @@
   }
 }
 
+/* Current Page Title Styles */
+.current-page-container {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.current-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .current-page-title {
+    font-size: 1.25rem;
+  }
+  
+  .current-page-container {
+    margin-left: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .current-page-title {
+    font-size: 1.1rem;
+  }
+}
+
 .user-info {
   flex: 1;
 }

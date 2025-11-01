@@ -29,7 +29,7 @@ const RecommendationCard = ({
             />
           </div>
           <div className="progress-text">
-            ₦{parseInt(amount_raised).toLocaleString()} of ₦{parseInt(target_amount).toLocaleString()} raised
+            ℏ{parseInt(amount_raised).toLocaleString()} of ℏ{parseInt(target_amount).toLocaleString()} raised
           </div>
         </div>
       )}

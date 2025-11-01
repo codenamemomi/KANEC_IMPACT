@@ -164,7 +164,7 @@ const Projects = () => {
   };
 
   const formatCurrency = (amount) => {
-    return `₦${parseInt(amount).toLocaleString()}`;
+    return `ℏ${parseInt(amount).toLocaleString()}`;
   };
 
   if (loading) {

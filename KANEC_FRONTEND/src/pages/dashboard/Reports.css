@@ -180,7 +180,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background: whitesmoke;
   border-radius: 8px;
   transition: all 0.2s ease;
 }
@@ -408,5 +407,158 @@
   
   .beneficiaries-count {
     font-size: 18px;
+  }
+}
+
+/* Funding Table Styles */
+.funding-table-section {
+  margin-bottom: 2rem;
+}
+
+.funding-table-container {
+  background: var(--card-background);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.funding-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header {
+  background: var(--background);
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.table-header.text-right {
+  text-align: right;
+}
+
+.table-row {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s ease;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row:hover {
+  background: var(--background);
+}
+
+.table-cell {
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.table-cell.text-right {
+  text-align: right;
+}
+
+.category-name {
+  font-weight: 600;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.category-rank {
+  background: var(--primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.category-text {
+  font-weight: 600;
+}
+
+.amount-cell .amount-value {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.project-count,
+.donation-count {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.avg-donation {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.percentage-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.percentage-value {
+  font-weight: 600;
+  color: var(--text);
+  min-width: 3rem;
+  text-align: right;
+}
+
+.percentage-bar {
+  width: 60px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.percentage-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #22c55e);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.no-data-message {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .funding-table-container {
+    overflow-x: auto;
+  }
+  
+  .funding-table {
+    min-width: 600px;
+  }
+  
+  .table-cell {
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .percentage-container {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .percentage-bar {
+    width: 40px;
   }
 }

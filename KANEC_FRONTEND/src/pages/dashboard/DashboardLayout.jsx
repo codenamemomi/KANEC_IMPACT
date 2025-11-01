@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -28,6 +28,7 @@ const DashboardLayout = () => {
   const [hbarBalance, setHbarBalance] = useState('0.00');
   const [balanceLoading, setBalanceLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
 
@@ -61,6 +62,15 @@ const DashboardLayout = () => {
     { icon: FileText, label: 'Impact Reports', path: '/dashboard/reports' },
     { icon: Settings, label: 'Settings', path: '/dashboard/settings' },
   ];
+
+  // Get current page title based on route
+  const getCurrentPageTitle = () => {
+    const currentItem = navItems.find(item => 
+      location.pathname === item.path || 
+      (item.path !== '/dashboard' && location.pathname.startsWith(item.path))
+    );
+    return currentItem ? currentItem.label : 'Dashboard';
+  };
 
   const handleLogout = () => {
     console.log('Logging out...');
@@ -160,13 +170,9 @@ const DashboardLayout = () => {
             <Menu size={24} />
           </button>
 
-          <div className="search-container">
-            <Search size={16} className="search-icon" />
-            <input 
-              type="text" 
-              placeholder="Search projects or causes..." 
-              className="dashboard-search"
-            />
+          {/* Current Page Title */}
+          <div className="current-page-container">
+            <h1 className="current-page-title">{getCurrentPageTitle()}</h1>
           </div>
 
           <div className="header-actions">

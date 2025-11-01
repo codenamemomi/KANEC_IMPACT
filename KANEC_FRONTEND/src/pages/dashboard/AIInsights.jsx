@@ -122,11 +122,35 @@ const AIInsights = () => {
   const getMonthlyData = () => {
     if (!insights?.insights?.monthly_trends) return [];
     
-    return insights.insights.monthly_trends.map(trend => ({
-      month: trend.month.split('-')[1], // Get month number
-      amount: trend.total_donated,
-      donations: trend.donation_count
-    }));
+    console.log("Raw monthly trends data:", insights.insights.monthly_trends);
+    
+    const transformedData = insights.insights.monthly_trends.map((trend, index) => {
+      let monthNumber;
+      
+      // Handle different month formats
+      if (typeof trend.month === 'number') {
+        monthNumber = trend.month;
+      } else if (trend.month && trend.month.includes('-')) {
+        monthNumber = parseInt(trend.month.split('-')[1]);
+      } else if (trend.month && !isNaN(parseInt(trend.month))) {
+        monthNumber = parseInt(trend.month);
+      } else {
+        // Fallback: use index + 1
+        monthNumber = index + 1;
+      }
+      
+      // Ensure month number is between 1-12
+      monthNumber = Math.max(1, Math.min(12, monthNumber));
+      
+      return {
+        month: monthNumber,
+        amount: trend.total_donated || 0,
+        donations: trend.donation_count || 0
+      };
+    });
+    
+    console.log("Transformed monthly data:", transformedData);
+    return transformedData;
   };
 
   const getRecommendations = () => {
@@ -174,7 +198,7 @@ const AIInsights = () => {
   };
 
   const formatCurrency = (amount) => {
-    return `₦${parseInt(amount).toLocaleString()}`;
+    return `ℏ${parseInt(amount).toLocaleString()}`;
   };
 
   if (loading) {
@@ -196,7 +220,6 @@ const AIInsights = () => {
     <div className="ai-insights-page">
       <div className="insights-header">
         <div>
-          <h1 className="insights-title">AI Insights</h1>
           <p className="insights-subtitle">Personalized recommendations and giving patterns</p>
         </div>
         <button
@@ -310,21 +333,31 @@ const AIInsights = () => {
           <div className="bar-chart-container">
             {monthlyData.length > 0 ? (
               <ResponsiveContainer width="100%" height={250}>
-                <BarChart data={monthlyData}>
+                <BarChart 
+                  data={monthlyData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis 
                     dataKey="month" 
                     stroke="hsl(var(--muted-foreground))"
                     fontSize={12}
-                    tickFormatter={(value) => `Month ${value}`}
+                    tickFormatter={(value) => {
+                      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                      return monthNames[value - 1] || `M${value}`;
+                    }}
                   />
                   <YAxis 
                     stroke="hsl(var(--muted-foreground))"
                     fontSize={12}
-                    tickFormatter={(value) => `₦${(value / 1000).toFixed(0)}k`}
+                    tickFormatter={(value) => `ℏ${(value / 1000).toFixed(0)}k`}
                   />
                   <Tooltip 
-                    formatter={(value) => [`₦${parseInt(value).toLocaleString()}`, 'Amount']}
+                    formatter={(value) => [`ℏ${parseInt(value).toLocaleString()}`, 'Amount']}
+                    labelFormatter={(value) => {
+                      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                      return monthNames[value - 1] || `Month ${value}`;
+                    }}
                     labelStyle={{ color: 'hsl(var(--foreground))' }}
                     contentStyle={{ 
                       backgroundColor: 'hsl(var(--background))',
@@ -336,6 +369,7 @@ const AIInsights = () => {
                     dataKey="amount" 
                     fill="#10b981"
                     radius={[4, 4, 0, 0]}
+                    barSize={monthlyData.length === 1 ? 50 : Math.max(20, 200 / monthlyData.length)} // Dynamic bar size
                   />
                 </BarChart>
               </ResponsiveContainer>

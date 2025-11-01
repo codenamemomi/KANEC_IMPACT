@@ -9,12 +9,12 @@ const About = () => {
     {
       name: "Elizabeth Okokon",
       role: "PROJECT MANAGER / HEDERA DEVELOPER",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop"
+      image: "public/LIZZY.png"
     },
     {
       name: "Akinrogunde Omomijudeoluwa",
       role: "BACKEND & BLOCKCHAIN DEVELOPER",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop"
+      image: "public/JOLA.jpeg"
     },
     {
       name: "Eze kelechi Joseph",
@@ -29,7 +29,7 @@ const About = () => {
     {
       name: "Olise Oseyenum Kenneth",
       role: "UI/UX DESIGNER",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop"
+      image: "public/OLISE.jpeg"
     },
     {
       name: "Isaac Ugwu Chinenye",

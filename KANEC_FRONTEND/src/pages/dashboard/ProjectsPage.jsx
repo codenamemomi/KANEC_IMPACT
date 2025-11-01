@@ -183,7 +183,6 @@ const ProjectsPage = () => {
   return (
     <div className="projects-page">
       <div className="projects-header">
-        <h1 className="projects-title">Projects</h1>
         <p className="projects-subtitle">
           Discover and support verified social impact projects
         </p>
@@ -289,8 +288,8 @@ const ProjectsPage = () => {
   </div>
   <div className="project-funding">
     <div className="funding-amounts">
-      <span className="amount-raised">₦{project.raised.toLocaleString()}</span>
-      <span className="amount-goal">of ₦{project.goal.toLocaleString()}</span>
+      <span className="amount-raised">ℏ{project.raised.toLocaleString()}</span>
+      <span className="amount-goal">of ℏ{project.goal.toLocaleString()}</span>
     </div>
     <div className="progress-bar">
       <div

@@ -57,7 +57,7 @@ const DonationChart = ({ monthlyTrends = [] }) => {
               axisLine={false}
               tickLine={false}
               tick={{ fontSize: 12, fill: '#6b7280' }}
-              tickFormatter={(value) => `₦${value / 1000}k`}
+              tickFormatter={(value) => `ℏ${value / 1000}k`}
             />
             <Tooltip 
               contentStyle={{
@@ -66,7 +66,7 @@ const DonationChart = ({ monthlyTrends = [] }) => {
                 borderRadius: '8px',
                 fontSize: '12px'
               }}
-              formatter={(value) => [`₦${parseInt(value).toLocaleString()}`, 'Amount']}
+              formatter={(value) => [`ℏ${parseInt(value).toLocaleString()}`, 'Amount']}
               cursor={{ fill: 'rgba(34, 197, 94, 0.1)' }}
             />
             <Bar 

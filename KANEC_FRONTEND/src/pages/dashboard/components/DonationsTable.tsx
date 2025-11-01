@@ -5,28 +5,28 @@ const DonationsTable = () => {
   const donations = [
     {
       project: 'Clean Water Nigeria',
-      amount: '₦15,000',
+      amount: 'ℏ15,000',
       status: 'Success',
       date: 'Oct 20, 2024',
       transaction: '0x7a8f...d29c'
     },
     {
       project: 'Solar Power for Schools',
-      amount: '₦25,000',
+      amount: 'ℏ25,000',
       status: 'Success',
       date: 'Oct 18, 2024',
       transaction: '0x3b9e...f83a'
     },
     {
       project: 'Healthcare for Rural Women',
-      amount: '₦10,000',
+      amount: 'ℏ10,000',
       status: 'Success',
       date: 'Oct 15, 2024',
       transaction: '0x5c2d...a74b'
     },
     {
       project: 'Education Fund Initiative',
-      amount: '₦20,000',
+      amount: 'ℏ20,000',
       status: 'Success',
       date: 'Oct 12, 2024',
       transaction: '0x9f4e...c63d'

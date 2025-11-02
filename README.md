@@ -24,7 +24,7 @@ Below are supporting materials for this project.
 - Test account email: `KANEC_JUDGES_TEST_ACCOUNT_EMAIL`  
 - Test account password: `KANEC_ACCOUNT_PASSWORD`  
 - **Important:** The password and private key are not stored here. Request them securely (see below).
-- **Important:** Each account Created on Our platforms get a Wallet ID created for the user Automatically.
+- **Important:** Each account created on our platforms gets a Wallet ID created for the user automatically.
 
 ---
 

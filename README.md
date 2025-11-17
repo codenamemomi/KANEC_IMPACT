@@ -13,7 +13,7 @@ KANEC IMPACT revolutionizes charitable giving by leveraging blockchain technolog
 Below are supporting materials for this project.
 - 📄 **Project Certificate:** [View Certificate](https://drive.google.com/file/d/1t9mhIG0dKNa-JmX53JTlCBEJRWnK3suk/view?usp=sharing)  
 - 📂 **Project Landing Page:** [Access Here](https://youtu.be/bJ9graMRcKw?si=YYGEnwPcbJCwvmZG)  
-- 🧾 **Pitch Deck:** [View Pitch Deck](https://youtu.be/54OkSxsHhEw?si=Stv86T5tFbYsgCOl)
+- 🧾 **Pitch Deck:** [View Pitch Deck](https://docs.google.com/presentation/d/1DJFROzqSXGTqH8YOrpk6WggulGQLSjWAEMOVHZlAHOo/edit?usp=sharing)
 - 🧾 **Project Link:** [View Website](https://kanec.vercel.app)
 ---
 
